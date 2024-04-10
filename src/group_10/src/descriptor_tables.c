@@ -1,9 +1,10 @@
-/* Edited from https://archive.is/L3pyA by James Molloy */
+/* Edited from https://archive.is/L3pyA and https://archive.is/8W6ew by James Molloy */
 #include "libc/stdint.h"
 #include "libc/string.h"
 #include "descriptor_tables.h"
 #include "terminal.h"
 #include "isr.h"
+#include "io.h"
 
 extern void gdt_flush(uint32_t gdtPtr);
 extern void idt_flush(uint32_t idtPtr);
@@ -20,6 +21,8 @@ void init_descriptor_tables() {
     terminalPrint(16, "Initializing Descriptor Tables\n");
     init_gdt();
     init_idt();
+    init_irq();
+    asm volatile("sti");
 }
 
 // GDT
@@ -105,4 +108,38 @@ void init_idt()
     set_idt_entry(31, (uint32_t)isr31, 0x08, 0x8E);
 
     idt_flush((uint32_t)&idt_ptr);
+}
+
+// IRQ
+void init_irq()
+{
+    // Remap the irq table.
+    outb(0x20, 0x11);
+    outb(0xA0, 0x11);
+    outb(0x21, 0x20);
+    outb(0xA1, 0x28);
+    outb(0x21, 0x04);
+    outb(0xA1, 0x02);
+    outb(0x21, 0x01);
+    outb(0xA1, 0x01);
+    outb(0x21, 0x0);
+    outb(0xA1, 0x0);
+
+
+    set_idt_entry(32, (uint32_t)irq0, 0x08, 0x8E);
+    set_idt_entry(33, (uint32_t)irq1, 0x08, 0x8E);
+    set_idt_entry(34, (uint32_t)irq2, 0x08, 0x8E);
+    set_idt_entry(35, (uint32_t)irq3, 0x08, 0x8E);
+    set_idt_entry(36, (uint32_t)irq4, 0x08, 0x8E);
+    set_idt_entry(37, (uint32_t)irq5, 0x08, 0x8E);
+    set_idt_entry(38, (uint32_t)irq6, 0x08, 0x8E);
+    set_idt_entry(39, (uint32_t)irq7, 0x08, 0x8E);
+    set_idt_entry(40, (uint32_t)irq8, 0x08, 0x8E);
+    set_idt_entry(41, (uint32_t)irq9, 0x08, 0x8E);
+    set_idt_entry(42, (uint32_t)irq10, 0x08, 0x8E);
+    set_idt_entry(43, (uint32_t)irq11, 0x08, 0x8E);
+    set_idt_entry(44, (uint32_t)irq12, 0x08, 0x8E);
+    set_idt_entry(45, (uint32_t)irq13, 0x08, 0x8E);
+    set_idt_entry(46, (uint32_t)irq14, 0x08, 0x8E);
+    set_idt_entry(47, (uint32_t)irq15, 0x08, 0x8E);
 }

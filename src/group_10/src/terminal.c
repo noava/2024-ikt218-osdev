@@ -1,6 +1,7 @@
 /* Edited from https://archive.is/L3pyA by James Molloy */
 #include "terminal.h"
 #include "libc/stdint.h"
+#include "io.h"
 
 #define VGA_ADDRESS 0xB8000
 #define BUFSIZE 2200
@@ -52,10 +53,6 @@ void terminalPrintDec(uint32_t num) {
     }
 
     terminalPrint(15, buffer);
-}
-
-static inline void outb(uint16_t port, uint8_t value) {
-    asm volatile ("outb %1, %0" : : "dN"(port), "a"(value));
 }
 
 static void move_cursor()
