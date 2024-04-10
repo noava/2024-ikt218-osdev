@@ -5,6 +5,7 @@
 #include "../include/descriptor_tables.h"
 #include "../include/terminal.h"
 #include "../include/isr.h"
+#include "../include/keyboard.h"
 
 
 struct multiboot_info {
@@ -17,11 +18,11 @@ int kernel_main();
 
 
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
-    
-    
     terminalClear();
 
     init_descriptor_tables();
+
+    init_keyboard();
 
     terminalClear();
     terminalPut('\n');
