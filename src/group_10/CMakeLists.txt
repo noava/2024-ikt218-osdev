@@ -56,16 +56,11 @@ set(CMAKE_ASM_NASM_COMPILE_OBJECT
 ########################################
 set(OS_KERNEL_LINKER "${CMAKE_CURRENT_SOURCE_DIR}/src/arch/${OS_ARCH_TARGET}/linker.ld")
 
+file(GLOB_RECURSE OS_KERNEL_SOURCES "src/*.c" "src/*.cpp" "src/*.asm")
+
 # Add executable target for the kernel
 add_executable(uiaos-kernel 
-	src/multiboot2.asm
-    src/kernel.c
-	src/kernel.cpp
-
-	src/gdt.c
-	src/arch/i386/gdt_flush.asm
-
-	src/terminal.c
+	${OS_KERNEL_SOURCES}
 )
 
 # Include directories for the kernel target
