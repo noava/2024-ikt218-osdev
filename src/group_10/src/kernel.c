@@ -6,6 +6,7 @@
 #include "../include/terminal.h"
 #include "../include/isr.h"
 #include "../include/keyboard.h"
+#include "../include/memory/memory.h"
 
 
 struct multiboot_info {
@@ -16,19 +17,22 @@ struct multiboot_info {
 
 int kernel_main();
 
+extern uint32_t end;
 
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     terminalClear();
 
     init_descriptor_tables();
 
+    init_kernel_memory(&end);
+    init_paging();
+    print_memory_layout();
+
     init_keyboard();
 
     terminalClear();
     terminalPut('\n');
-    asm volatile ("int $0x0");
-    asm volatile ("int $0x1");
-    asm volatile ("int $0x2");
+
     terminalPrintDec(123);
     terminalPut('\n');
     terminalPrintDec(0x33);
