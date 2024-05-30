@@ -67,7 +67,7 @@ static void move_cursor()
 
 void terminalClear()
 {
-    uint8_t *vga = (uint8_t*) VGA_ADDRESS;
+    uint16_t *vga = (uint16_t*) VGA_ADDRESS;
     for (int i = 0; i < BUFSIZE; i++)
     {
         vga[i] = 0;

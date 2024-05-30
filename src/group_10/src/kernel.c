@@ -37,12 +37,8 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     init_keyboard();
 
 
-    sleep_interrupt(2000);
+    sleep_interrupt(1000);
     terminalClear();
-    terminalPut('\n');
-
-    terminalPrint(15, "Welcome to group 10's kernel\n");
-    terminalPut('\n');
     terminalPut('\n');
     
     // Call cpp kernel_main (defined in kernel.cpp)

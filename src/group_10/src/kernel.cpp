@@ -3,6 +3,8 @@ extern "C"{
     #include "memory/memory.h"
     #include "libc/stdio.h"
     #include "pit.h"
+    #include "song/song.h"
+    #include "terminal.h"
 }
 
 // Existing global operator new overloads
@@ -40,23 +42,38 @@ int kernel_main(){
     asm volatile ("int $0x0");
     asm volatile ("int $0x1");
     asm volatile ("int $0x2");
+    
+    terminalPut('\n');
 
     void* some_memory = malloc(12345); 
     void* memory2 = malloc(54321); 
     void* memory3 = malloc(13331);
     char* memory4 = new char[1000]();
 
-    int counter = 0;
-    while(true){
-        printf("[%d]: Sleeping with busy-waiting (HIGH CPU).\n", counter);
-        sleep_busy(1000);
-        printf("[%d]: Slept using busy-waiting.\n", counter++);
+    terminalPut('\n');
 
-        printf("[%d]: Sleeping with interrupts (LOW CPU).\n", counter);
-        sleep_interrupt(1000);
-        printf("[%d]: Slept using interrupts.\n", counter++);
+    Song* songs[] = {
+        new Song({charge_theme, sizeof(charge_theme) / sizeof(Note)}),
     };
-
+    uint32_t n_songs = sizeof(songs) / sizeof(Song*);
     
+    terminalPut('\n');
+
+    SongPlayer* player = create_song_player();
+
+    sleep_interrupt(2000);
+    terminalClear();
+    terminalPut('\n');
+    terminalPrint(15, "Welcome to group 10's kernel\n");
+    terminalPut('\n');
+
+    for(uint32_t i =0; i < n_songs; i++){
+        printf("Playing Song...\n");
+        player->play_song(songs[i]);
+        printf("Finished playing the song.\n");
+    }
+
+    printf("Kernel main loop\n");
+    while(true) {}
     return 0;
 }
