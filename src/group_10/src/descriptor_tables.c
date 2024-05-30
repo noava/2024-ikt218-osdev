@@ -18,12 +18,12 @@ struct idt_entry idt_entries[256];
 struct idt_pointer idt_ptr;
 
 void init_descriptor_tables() {
-    terminalPrint(16, "Initializing Descriptor Tables\n");
+    terminalPrint("Initializing Descriptor Tables\n");
     init_gdt();
     init_idt();
     init_irq();
     asm volatile("sti");
-    terminalPrint(16, "Initialized Descriptor Tables\n");
+    terminalPrint("Initialized Descriptor Tables\n");
 }
 
 // GDT

@@ -6,7 +6,7 @@
 
 void isr_handler(registers_t regs)
 {
-   terminalPrint(15, "recieved interrupt: ");
+   terminalPrint("recieved interrupt: ");
    terminalPrintDec(regs.int_no);
    terminalPut('\n');
 }

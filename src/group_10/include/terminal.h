@@ -1,6 +1,8 @@
 #include "libc/stdint.h"
 
-void terminalPrint(int colour, const char * string);
+void terminalPrint(const char * string);
+
+void monitor_setcolor(uint8_t color);
 
 void terminalPrintDec(uint32_t num);
 

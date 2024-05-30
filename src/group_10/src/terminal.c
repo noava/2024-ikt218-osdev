@@ -9,13 +9,22 @@
 static uint8_t cursor_x = 0;
 static uint8_t cursor_y = 0;
 
-void terminalPrint(int colour, const char *string)
+uint8_t backColour = 0;
+uint8_t foreColour = 15;
+
+void terminalPrint(const char *string)
 {
     while(*string != 0)
     {
         terminalPut(*string);
         string++;
     }
+}
+
+void terminalSetColor(uint8_t fore, uint8_t back)
+{
+    foreColour = fore;
+    backColour = back;
 }
 
 // Function to convert an integer to a string in decimal format
@@ -52,7 +61,7 @@ void terminalPrintDec(uint32_t num) {
         buffer[length - j - 1] = temp;
     }
 
-    terminalPrint(15, buffer);
+    terminalPrint(buffer);
 }
 
 static void move_cursor()
@@ -81,10 +90,6 @@ void terminalClear()
 // Writes a single character out to the screen.
 void terminalPut(char c)
 {
-    // The background colour is black (0), the foreground is white (15).
-    uint8_t backColour = 0;
-    uint8_t foreColour = 15;
-
     // The attribute byte is made up of two nibbles - the lower being the
     // foreground colour, and the upper the background colour.
     uint8_t  attributeByte = (backColour << 4) | (foreColour & 0x0F);

@@ -5,6 +5,7 @@ extern "C"{
     #include "pit.h"
     #include "song/song.h"
     #include "terminal.h"
+    #include "funzies.h"
 }
 
 // Existing global operator new overloads
@@ -64,7 +65,7 @@ int kernel_main(){
     sleep_interrupt(2000);
     terminalClear();
     terminalPut('\n');
-    terminalPrint(15, "Welcome to group 10's kernel\n");
+    splashScreen(); // From Funzies
     terminalPut('\n');
 
     for(uint32_t i =0; i < n_songs; i++){
