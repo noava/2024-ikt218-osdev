@@ -23,6 +23,7 @@ void init_descriptor_tables() {
     init_idt();
     init_irq();
     asm volatile("sti");
+    terminalPrint(16, "Initialized Descriptor Tables\n");
 }
 
 // GDT
