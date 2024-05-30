@@ -10,7 +10,7 @@ static uint8_t cursor_x = 0;
 static uint8_t cursor_y = 0;
 
 uint8_t backColour = 0;
-uint8_t foreColour = 15;
+uint8_t foreColour = 7;
 
 void terminalPrint(const char *string)
 {
@@ -19,6 +19,11 @@ void terminalPrint(const char *string)
         terminalPut(*string);
         string++;
     }
+}
+
+void HelloWorld(const char * string)
+{
+    terminalPrint(string);
 }
 
 void terminalSetColor(uint8_t fore, uint8_t back)

@@ -40,10 +40,12 @@ void operator delete[](void* ptr, size_t size) noexcept {
 
 extern "C" int kernel_main(void);
 int kernel_main(){
+    terminalPrint("Triggering interrupts\n\n");
     asm volatile ("int $0x0");
     asm volatile ("int $0x1");
     asm volatile ("int $0x2");
     
+    terminalPrint("\nAllocating some memory\n");
     terminalPut('\n');
 
     void* some_memory = malloc(12345); 
@@ -51,6 +53,15 @@ int kernel_main(){
     void* memory3 = malloc(13331);
     char* memory4 = new char[1000]();
 
+    sleep_interrupt(2000);
+    terminalClear();
+    
+    free(some_memory);
+    free(memory2);
+    free(memory3);
+    delete[] memory4;
+    terminalPrint("Freed up some memory\n");
+    terminalPrint("Allocating some memory for songs\n");
     terminalPut('\n');
 
     Song* songs[] = {
@@ -73,8 +84,13 @@ int kernel_main(){
         player->play_song(songs[i]);
         printf("Finished playing the song.\n");
     }
+    delete player;
+    
+    terminalPut('\n');
 
-    printf("Kernel main loop\n");
+    terminalSetColor(11, 0);
+    HelloWorld("print\n");
+    
     while(true) {}
     return 0;
 }
