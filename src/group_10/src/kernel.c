@@ -6,6 +6,7 @@
 #include "../include/terminal.h"
 #include "../include/isr.h"
 #include "../include/keyboard.h"
+#include "../include/memory/memory.h"
 
 
 struct multiboot_info {
@@ -16,27 +17,28 @@ struct multiboot_info {
 
 int kernel_main();
 
+extern uint32_t end;
 
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     terminalClear();
 
+    // Initializes GDT, IDT and IRQs
     init_descriptor_tables();
 
+    // Initializes the memory manager
+    init_kernel_memory(&end);
+    init_paging();
+    print_memory_layout();
+
+    // Initializes the PIT
+    init_pit();
+
+    // Initializes the keyboard
     init_keyboard();
 
+
+    sleep_interrupt(1000);
     terminalClear();
-    terminalPut('\n');
-    asm volatile ("int $0x0");
-    asm volatile ("int $0x1");
-    asm volatile ("int $0x2");
-    terminalPrintDec(123);
-    terminalPut('\n');
-    terminalPrintDec(0x33);
-    terminalPut('\n');
-    terminalPut('\n');
-    terminalPrint(15, "Welcome to group 10's kernel\n");
-    terminalPut('\n');
-    terminalPut('\n');
     
     // Call cpp kernel_main (defined in kernel.cpp)
     return kernel_main();
