@@ -1,6 +1,9 @@
 #include "libc/stdint.h"
+#include "time.h"
 
 void terminalPrint(const char * string);
+
+void terminalPrintWithDelay(const char *string, int delayTime);
 
 void HelloWorld(const char * string);
 

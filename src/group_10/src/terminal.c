@@ -2,6 +2,7 @@
 #include "terminal.h"
 #include "libc/stdint.h"
 #include "io.h"
+#include "time.h"
 
 #define VGA_ADDRESS 0xB8000
 #define BUFSIZE 2200
@@ -18,6 +19,14 @@ void terminalPrint(const char *string)
     {
         terminalPut(*string);
         string++;
+    }
+}
+
+void terminalPrintWithDelay(const char *string, int delayTime) {
+    while (*string != 0) {
+        terminalPut(*string);
+        string++;
+        delay(delayTime);
     }
 }
 

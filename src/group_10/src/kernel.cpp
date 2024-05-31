@@ -89,7 +89,7 @@ int kernel_main(){
     terminalPut('\n');
 
     terminalSetColor(11, 0);
-    HelloWorld("print\n");
+    HelloWorld("HelloWorld(\"print\");\n");
     
     while(true) {}
     return 0;
